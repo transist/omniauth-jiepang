@@ -27,6 +27,24 @@ module OmniAuth
           }
         }
       end
+      
+      def callback_phase
+        if request.params['error'] || request.params['error_reason']
+          raise CallbackError.new(request.params['error'], request.params['error_description'] || request.params['error_reason'], request.params['error_uri'])
+        end
+
+        self.access_token = build_access_token
+        self.access_token = client.auth_code.refresh_token(access_token.refresh_token) if access_token.expired?
+
+        super
+      rescue ::OAuth2::Error, CallbackError => e
+        puts e.inspect
+        fail!(:invalid_credentials, e)
+      rescue ::MultiJson::DecodeError => e
+        fail!(:invalid_response, e)
+      rescue ::Timeout::Error, ::Errno::ETIMEDOUT => e
+        fail!(:timeout, e)
+      end
 
       def raw_info
         @raw_info ||= {} #MultiJson.decode(access_token.get("http://api.jiepang.com/v1/account/verify_credentials?access_token=#{@access_token.token}").body)
