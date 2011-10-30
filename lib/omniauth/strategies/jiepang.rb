@@ -12,6 +12,8 @@ module OmniAuth
       }
       def request_phase
         super
+        session['oauth'][name.to_s]['callback_confirmed'] = true
+        
       end
 
       uid { raw_info['id'] }
