@@ -10,11 +10,6 @@ module OmniAuth
         :authorize_url => '/oauth/authorize',
         :token_url     => '/oauth/access_token'
       }
-      def request_phase
-        super
-        session['oauth'][name.to_s]['callback_confirmed'] = true
-        
-      end
 
       uid { raw_info['id'] }
 
