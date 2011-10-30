@@ -6,7 +6,7 @@ module OmniAuth
   module Strategies
     class Jiepang < OmniAuth::Strategies::OAuth2
       option :client_options, {
-        :site          => 'https://jiepang.com/',
+        :site          => 'https://jiepang.com',
         :authorize_url => '/oauth/authorize',
         :token_url     => '/oauth/access_token',
         :token_method  => :get
