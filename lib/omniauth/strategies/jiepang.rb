@@ -8,8 +8,7 @@ module OmniAuth
       option :client_options, {
         :site          => 'https://jiepang.com',
         :authorize_url => '/oauth/authorize',
-        :token_url     => '/oauth/access_token',
-        :token_method  => :get
+        :token_url     => '/oauth/access_token'
       }
       def request_phase
         super
