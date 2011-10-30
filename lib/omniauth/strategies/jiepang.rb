@@ -41,7 +41,7 @@ module OmniAuth
       def build_access_token
         puts request.params['code'].inspect
         puts callback_url.inspect
-        puts options.token_params.inspect
+        puts options.token_params.to_hash(:symbolize_keys => true).inspect
         verifier = request.params['code']
         client.auth_code.get_token(verifier, {:redirect_uri => callback_url}.merge(options.token_params.to_hash(:symbolize_keys => true)))
       end
