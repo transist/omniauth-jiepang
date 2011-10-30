@@ -21,11 +21,11 @@ module OmniAuth
         {
           "uid" => raw_info["id"], 
           "gender"=> raw_info['sex'], 
-          "image"=>raw_info['logo50'],
+          "image"=>raw_info['avatar'],
           'name' => raw_info['name'],
           'nickname' => raw_info['nick'],
           'location' => raw_info['city'],
-          'email' => raw_info['email']
+          'email' => raw_info['email'],
           'urls' => {
             'Jiepang' => "http://jiepang.com/user"+ raw_info["id"].to_s
           }
