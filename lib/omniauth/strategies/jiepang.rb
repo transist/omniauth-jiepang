@@ -35,6 +35,16 @@ module OmniAuth
       rescue ::Errno::ETIMEDOUT
         raise ::Timeout::Error
       end
+      
+      protected
+      
+      def build_access_token
+        puts request.params['code'].inspect
+        puts callback_url.inspect
+        puts options.token_params.inspect
+        verifier = request.params['code']
+        client.auth_code.get_token(verifier, {:redirect_uri => callback_url}.merge(options.token_params.to_hash(:symbolize_keys => true)))
+      end
     end
   end
 end
