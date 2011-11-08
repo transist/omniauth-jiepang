@@ -27,6 +27,49 @@ module OmniAuth
           }
         }
       end
+      
+      def signed_params
+        params = {}
+        params[:api_key] = client.id
+        params[:method] = 'users.getInfo'
+        params[:call_id] = Time.now.to_i
+        params[:format] = 'json'
+        params[:v] = '1.0'
+        params[:uids] = session_key['user']['id']
+        params[:session_key] = session_key['jiepang_token']['session_key']
+        params[:sig] = Digest::MD5.hexdigest(params.map{|k,v| "#{k}=#{v}"}.sort.join + client.secret)
+        params
+      end
+
+      def session_key
+        response = @access_token.get('/renren_api/session_key', {:params => {:oauth_token => @access_token.token}})
+        @session_key ||= MultiJson.decode(response.response.env[:body])
+      end
+
+      def request_phase
+        options[:scope] ||= 'publish_feed'
+        super
+      end
+
+      def build_access_token
+        if jiepang_session.nil? || jiepang_session.empty?
+          verifier = request.params['code']
+          self.access_token = client.auth_code.get_token(verifier, {:redirect_uri => callback_url}.merge(options))
+          puts self.access_token.inspect
+          self.access_token
+        else
+          self.access_token = ::OAuth2::AccessToken.new(client, jiepang_session['access_token'])
+        end
+      end
+
+      def jiepang_session
+        session_cookie = request.cookies["rrs_#{client.id}"]
+        if session_cookie
+          @jiepang_session ||= Rack::Utils.parse_query(request.cookies["rrs_#{client.id}"].gsub('"', ''))
+        else
+          nil
+        end
+      end
 
       def raw_info
         @raw_info ||= {} #MultiJson.decode(access_token.get("http://api.jiepang.com/v1/account/verify_credentials?access_token=#{@access_token.token}").body)
