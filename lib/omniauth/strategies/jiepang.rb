@@ -54,17 +54,17 @@ module OmniAuth
         super
       end
 
-      def build_access_token
-        puts "**********build_access_token"
-        if jiepang_session.nil? || jiepang_session.empty?
-          verifier = request.params['code']
-          self.access_token = client.auth_code.get_token(verifier, {:redirect_uri => callback_url}.merge(options))
-          puts self.access_token.inspect
-          self.access_token
-        else
-          self.access_token = ::OAuth2::AccessToken.new(client, jiepang_session['access_token'])
-        end
-      end
+      # def build_access_token
+      #         puts "**********build_access_token"
+      #         if jiepang_session.nil? || jiepang_session.empty?
+      #           verifier = request.params['code']
+      #           self.access_token = client.auth_code.get_token(verifier, {:redirect_uri => callback_url}.merge(options))
+      #           puts self.access_token.inspect
+      #           self.access_token
+      #         else
+      #           self.access_token = ::OAuth2::AccessToken.new(client, jiepang_session['access_token'])
+      #         end
+      #       end
 
       def jiepang_session
         puts "**********jiepang_session"
