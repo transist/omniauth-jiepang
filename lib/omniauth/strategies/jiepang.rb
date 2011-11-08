@@ -31,12 +31,12 @@ module OmniAuth
       def signed_params
         params = {}
         params[:api_key] = client.id
-        params[:method] = 'users.getInfo'
+        #params[:method] = 'users.getInfo'
         params[:call_id] = Time.now.to_i
         params[:format] = 'json'
         params[:v] = '1.0'
-        params[:uids] = session_key['user']['id']
-        params[:session_key] = session_key['jiepang_token']['session_key']
+        #params[:uids] = session_key['user']['id']
+        #params[:session_key] = session_key['jiepang_token']['session_key']
         params[:sig] = Digest::MD5.hexdigest(params.map{|k,v| "#{k}=#{v}"}.sort.join + client.secret)
         params
       end
