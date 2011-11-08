@@ -73,6 +73,7 @@ module OmniAuth
 
       def raw_info
         @raw_info ||= {} #MultiJson.decode(access_token.get("http://api.jiepang.com/v1/account/verify_credentials?access_token=#{@access_token.token}").body)
+        puts "********@raw_info.inspect"
         puts @raw_info.inspect
         @raw_info
       rescue ::Errno::ETIMEDOUT
