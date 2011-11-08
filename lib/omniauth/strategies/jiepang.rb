@@ -29,6 +29,7 @@ module OmniAuth
       end
       
       def signed_params
+        puts "**********signed_params"
         params = {}
         params[:api_key] = client.id
         #params[:method] = 'users.getInfo'
@@ -42,16 +43,19 @@ module OmniAuth
       end
 
       def session_key
+        puts "**********session_key"
         response = @access_token.get('/renren_api/session_key', {:params => {:oauth_token => @access_token.token}})
         @session_key ||= MultiJson.decode(response.response.env[:body])
       end
 
       def request_phase
+        puts "**********request_phase"
         options[:scope] ||= 'publish_feed'
         super
       end
 
       def build_access_token
+        puts "**********build_access_token"
         if jiepang_session.nil? || jiepang_session.empty?
           verifier = request.params['code']
           self.access_token = client.auth_code.get_token(verifier, {:redirect_uri => callback_url}.merge(options))
@@ -63,6 +67,7 @@ module OmniAuth
       end
 
       def jiepang_session
+        puts "**********jiepang_session"
         session_cookie = request.cookies["rrs_#{client.id}"]
         if session_cookie
           @jiepang_session ||= Rack::Utils.parse_query(request.cookies["rrs_#{client.id}"].gsub('"', ''))
