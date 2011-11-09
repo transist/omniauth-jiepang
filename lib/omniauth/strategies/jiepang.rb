@@ -11,7 +11,7 @@ module OmniAuth
       option :client_options, {
         :site => "https://jiepang.com",
         :authorize_url => '/oauth/authorize',
-        :token_url     => 'oauth/token'
+        :token_url     => '/oauth/token'
       }
 
       # These are called after authentication has succeeded. If
