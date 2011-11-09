@@ -43,9 +43,7 @@ module OmniAuth
       end
 
       def raw_info
-        response = Net::HTTP.post_form(URI.parse('http://api.jiepang.com/v1/account/verify_credentials'), signed_params).body
-        @raw_info ||= MultiJson.decode(response)[0]
-        
+        @raw_info ||= access_token.get('http://api.jiepang.com/v1/account/verify_credentials').parsed
         puts "*****@raw_info.inspect"
         puts @raw_info.inspect
         @raw_info
