@@ -41,6 +41,12 @@ module OmniAuth
               params[:sig] = Digest::MD5.hexdigest(params.map{|k,v| "#{k}=#{v}"}.sort.join + client.secret)
               params
       end
+      
+      def token_params
+         params = {}
+         params[:code] = 'testcode'
+         params
+      end
 
       # def session_key
       #         puts "**********session_key"
